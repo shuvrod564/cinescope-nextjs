@@ -1,103 +1,104 @@
-import Image from "next/image";
+ 
+import Link from "next/link"; 
+import { TvMinimalPlay } from 'lucide-react'
+import { apiOptions } from "@/helpers/apiOptions";
+import TrendingMovies from "@/components/TrendingMovies";
+import HeroBanner from "@/components/HeroBanner";
+import MovieSearch from "@/components/MovieSearch";
 
-export default function Home() {
+async function getBannerList() {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/movie/102382`;
+  const res = await fetch(url, apiOptions);
+  const data = await res.json();
+  return data;
+}
+
+export async function getAlGenres() {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/genre/movie/list`; 
+
+  try {
+    const res = await fetch(url, apiOptions);
+   if (!res.ok) throw new Error("Failed to fetch movies");
+    
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error, "error");
+    return []; 
+  } 
+}
+
+export async function getTrendingMovies() {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/trending/movie/week?page=10`;
+  try {
+    const res = await fetch(url, apiOptions);
+   if (!res.ok) throw new Error("Failed to fetch movies");
+    
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error, "error");
+    return []; 
+  }
+}
+
+export const metadata = {
+  'title': 'Cine Scope | All Movies',
+  'description': 'All Movies'
+}
+
+export default async function Home() {
+
+  // GET BANNER IMAGE
+  const bannerSlider = await getBannerList(); 
+  
+
+  // GET ALL GENRES
+  const genres = await getAlGenres(); 
+
+  // GET ALL TRENDING MOVIES
+  const trendingMovies = await getTrendingMovies();
+  // console.log(trendingMovies.results);
+  
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <> 
+      <MovieSearch />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+     {/* HERO BANNER SECTION */}
+     {/* <HeroBanner data={bannerSlider} /> */}
+
+
+     {/* MOVIES CAROUSEL */}
+      <TrendingMovies data={trendingMovies.results} />
+
+      {/* SET ALL GENRES LIST HERE */}
+      <div className="py-12 md:py-20">
+        <div className="container">
+          <h2 className="text-xl lg:text-2xl font-semibold mb-4">List of official genres for movies</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {
+               
+              genres.genres?.map((genre, index) => (
+                <div className="flex" key={index}>
+                  <div className="border border-gray-200 rounded-lg w-full bg-white text-center p-4">
+                    <Link href={`/genre/${genre.id}`}>
+                      {genre.name}
+                    </Link>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        {/* END CONTAINER */}
+      </div>
+
+
+      
+
+
+    </>
   );
 }
