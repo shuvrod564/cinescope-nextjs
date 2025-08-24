@@ -1,9 +1,9 @@
 // app/auth/callback/page.jsx
-"use client";
-import { useAuth } from "@/context/AuthContext";
+"use client"; 
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation"; 
 import { useEffect, useState } from "react"; 
+import { useAuth } from "@/context/AuthContext";
 
 export default function CallbackPage() {
   const params = useSearchParams();
@@ -28,7 +28,9 @@ export default function CallbackPage() {
       if (!data.success) throw new Error("Failed to create session");
       setSession(data.session_id);
       login(data.session_id);
-      router.push("/");
+      setTimeout(() => { 
+        router.push("/");
+      }, 3000);
        
     };
 
@@ -52,7 +54,7 @@ export default function CallbackPage() {
             </div> 
         </>
       ) : (
-        <p>Logging in...</p>
+        <p className="text-center py-12">Logging in...</p>
       )}
     </div>
   );

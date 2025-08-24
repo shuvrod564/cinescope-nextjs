@@ -6,7 +6,7 @@ export async function GET() {
     );
 
     const data = await res.json();
-    console.log('get token:', data);
+    // console.log('get token server:', data);
     
     return Response.json(data);
 }

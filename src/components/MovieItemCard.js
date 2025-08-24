@@ -29,7 +29,13 @@ const MovieItemCard = ({ movie }) => {
                     />
                 </Link>
                 <div className="pb-3 px-2 pt-4">
-                    <p className='text-gray-500 text-xs mb-1.5'>{formatDate(movie.release_date)}</p>
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <p className='text-gray-500 text-xs'>{formatDate(movie.release_date)}</p>
+                        <div className="inline-flex items-center gap-1">
+                            <Star className='w-4 h-4 text-amber-600' />
+                            <span className='text-sm text-gray-500'>{movieRating(movie.vote_average)}</span>
+                        </div>
+                    </div>
                     <h3 className="text-base font-medium leading-[1.1] mb-1.5 min-h-8">
                         <Tooltip>
                             <TooltipTrigger className='w-full text-left'>
@@ -41,10 +47,7 @@ const MovieItemCard = ({ movie }) => {
                         </Tooltip> 
                     </h3>
 
-                    <div className="inline-flex items-center gap-1">
-                        <Star className='w-4 h-4 text-amber-600' />
-                        <span className='text-sm text-gray-500'>{movieRating(movie.vote_average)}</span>
-                    </div>
+                    
                 </div>
             </div>
         </>

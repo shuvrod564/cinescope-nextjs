@@ -14,7 +14,7 @@ export default async function SimilarMovies({ id }) {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/movie/${id}/similar`;
   const res = await fetch(url, apiOptions);
   const data = await res.json();
-  console.log(data);
+  // console.log(data);
 
 
   return (

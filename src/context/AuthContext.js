@@ -7,9 +7,12 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
     const [session, setSession] = useState(null);
 
+    // Load session from localStorage (only runs in browser)
     useEffect(() => {
-        const stored = localStorage.getItem("tmdb_session");
-        if (stored) setSession(stored);
+        if (typeof window !== "undefined") {
+            const stored = localStorage.getItem("tmdb_session");
+            if (stored) setSession(stored);
+        }
     }, []);
 
     const login = (sessionId) => {
@@ -22,12 +25,16 @@ export function AuthProvider({ children }) {
         localStorage.removeItem("tmdb_session");
     }
 
+
+
+
     return (
         <AuthContext.Provider value={{ session, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
 }
+
 
 export function useAuth() {
     return useContext(AuthContext);

@@ -31,6 +31,7 @@ export default function MoviesPagination({ totalPages }) {
                   e.preventDefault();
                   router.push(`?page=${index + 1}`);
                 }}
+                className={"cursor-pointer"}
               >
                 {index + 1}
               </PaginationLink>

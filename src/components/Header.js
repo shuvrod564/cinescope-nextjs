@@ -1,10 +1,14 @@
+'use client';
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
-import LoginWithTMBD from './LoginWithTMBD'
-import { userSession } from '@/helpers/userSesstion'
+import React from 'react' 
+import { useAuth } from '@/context/AuthContext'
+import { LogIn, LogOut } from 'lucide-react';
 
 const Header = () => {
+    const {session, logout} = useAuth();
+    console.log('stroed session id: ', session);
+    
    
   return (
     <>
@@ -29,7 +33,26 @@ const Header = () => {
                         <Link href="/movies">Movies</Link>
                     </li>
                 </ul> 
-                <LoginWithTMBD />
+                {
+                    session ? (
+                        <button
+                            type='button'
+                            onClick={logout}
+                            className='px-4 py-2 inline-flex items-center gap-1 text-white bg-amber-600 rounded-full font-medium hover:bg-amber-500'
+                        >
+                            <LogOut className='size-4.5' />
+                            <span>Logout</span>
+                        </button>
+                    ) : (
+                        <Link
+                            href={`/login`}
+                            className='px-4 py-2 inline-flex items-center gap-2 text-white bg-amber-600 rounded-full font-semibold hover:bg-amber-500'
+                        >
+                            <LogIn className='size-4.5' />
+                            <span>Login</span>
+                        </Link>
+                    )
+                } 
             </div>
         </nav>
     
