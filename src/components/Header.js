@@ -1,8 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import LoginWithTMBD from './LoginWithTMBD'
+import { userSession } from '@/helpers/userSesstion'
 
 const Header = () => {
+   
   return (
     <>
         <nav className='py-3 lg:py-4 bg-white'>
@@ -25,7 +28,8 @@ const Header = () => {
                     <li>
                         <Link href="/movies">Movies</Link>
                     </li>
-                </ul>
+                </ul> 
+                <LoginWithTMBD />
             </div>
         </nav>
     
